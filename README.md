@@ -1,20 +1,19 @@
-# Image Segmentation Using Thresholding Techniques in OpenCV
+# Implementation of Erosion and Dilation Using OpenCV
 
 ## Developed By
 
-**Name:** Tawqir Ahamed Sayeed L
+**Name:** Sairam K 
 
-**Register No:** 212225240166
+**Register No:** 212225240132
 
 ## Aim
 
-To segment an image using Global Thresholding, Adaptive Thresholding, and Otsu's Thresholding techniques using Python and OpenCV.
+To write a Python program using OpenCV to perform morphological operations such as Erosion and Dilation on an image.
 
 The program performs the following operations:
 
-- Global Thresholding
-- Adaptive Thresholding
-- Otsu's Thresholding
+- Image Erosion
+- Image Dilation
 
 ## Software Used
 
@@ -32,109 +31,101 @@ Import the required libraries: OpenCV, NumPy, and Matplotlib.
 
 ### Step 2:
 
-Load the input image using OpenCV.
+Create a blank image using NumPy.
 
 ### Step 3:
 
-Convert the input image into grayscale format.
+Insert text onto the image using OpenCV's text drawing function.
 
-### Step 4: Global Thresholding
+### Step 4:
 
-- Select a fixed threshold value.
-- Apply thresholding to separate foreground and background pixels.
-- Display the thresholded image.
+Display the original image.
 
-### Step 5: Adaptive Thresholding
+### Step 5:
 
-- Compute threshold values for small regions of the image.
-- Apply Adaptive Mean Thresholding.
-- Apply Adaptive Gaussian Thresholding.
-- Display the segmented images.
+Create a structuring element (kernel) of suitable size.
 
-### Step 6: Otsu's Thresholding
+### Step 6: Image Erosion
 
-- Automatically determine the optimal threshold value.
-- Apply Otsu's thresholding technique.
-- Display the segmented image.
+- Apply the erosion operation using the created kernel.
+- Remove pixels from the boundaries of foreground objects.
+- Display the eroded image.
 
-### Step 7:
+### Step 7: Image Dilation
 
-Compare the results obtained from Global, Adaptive, and Otsu's thresholding methods.
+- Apply the dilation operation using the same kernel.
+- Add pixels to the boundaries of foreground objects.
+- Display the dilated image.
+
+### Step 8:
+
+Compare the original, eroded, and dilated images.
 
 ## Program
-
 ```
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 
-# Step 2: Read the image and convert to grayscale
-image = cv2.imread('ex8.png')  # Replace with your image file path
-gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)  # Convert to grayscale
+# Create a blank image
+image = np.zeros((500, 500, 3), dtype=np.uint8)
 
-# Original Image
-plt.subplot(2, 2, 1)
-plt.imshow(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))  # Convert from BGR to RGB for display
-plt.title("Original Image")
+# Add text on the image using cv2.putText
+font = cv2.FONT_HERSHEY_SIMPLEX
+cv2.putText(image, 'Hello World', (100, 250), font, 1, (255, 255, 255), 2, cv2.LINE_AA)
+
+# Display the input image
+plt.imshow(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))  # Convert BGR to RGB for displaying
+plt.title("Input Image with Text")
 plt.axis('off')
 
-# Global Thresholding
-plt.subplot(2, 2, 2)
-plt.imshow(global_thresholded, cmap='gray')
-plt.title("Global Thresholding")
+# Create a simple square kernel (3x3)
+kernel = np.ones((3, 3), np.uint8)
+
+# Apply erosion (shrinking effect)
+eroded_image = cv2.erode(image, kernel, iterations=1)
+
+# Display the eroded image
+plt.imshow(cv2.cvtColor(eroded_image, cv2.COLOR_BGR2RGB))  # Convert BGR to RGB
+plt.title("Eroded Image")
 plt.axis('off')
 
-# Adaptive Thresholding
-plt.subplot(2, 2, 3)
-plt.imshow(adaptive_thresholded, cmap='gray')
-plt.title("Adaptive Thresholding")
-plt.axis('off')
+# Apply dilation (expanding effect)
+dilated_image = cv2.dilate(image, kernel, iterations=1)
 
-# Otsu's Method
-plt.subplot(2, 2, 4)
-plt.imshow(otsu_thresholded, cmap='gray')
-plt.title("Otsu's Method")
+# Display the dilated image
+plt.imshow(cv2.cvtColor(dilated_image, cv2.COLOR_BGR2RGB))  # Convert BGR to RGB
+plt.title("Dilated Image")
 plt.axis('off')
-
-# Show the plot
-plt.tight_layout()
-plt.show()
 ```
 
 ## Output
-<img width="259" height="215" alt="image" src="https://github.com/user-attachments/assets/74db5d41-75d7-4bee-a6b0-cfcc2cadd590" />
+<img width="466" height="454" alt="image" src="https://github.com/user-attachments/assets/752d274a-371d-4265-a4a0-329d87882aa1" />
 
-<img width="726" height="521" alt="image" src="https://github.com/user-attachments/assets/c7aabdeb-4158-4ffa-a8f3-ff0d4517cdd1" />
+<img width="442" height="452" alt="image" src="https://github.com/user-attachments/assets/851e2b6b-da33-4c40-a783-64a468ab8de0" />
+
+<img width="415" height="449" alt="image" src="https://github.com/user-attachments/assets/6f334a58-6e1e-49c4-a02f-0ccdf5d88e8d" />
 
 
-### Original Grayscale Image
+### Original Image
 
-- The grayscale version of the input image is displayed.
-- Serves as the input for thresholding operations.
+- A text image containing characters is displayed.
+- The image serves as the input for morphological processing.
 
-### Global Thresholding
-
-- Original image is displayed.
-- Thresholded image is displayed.
-- A fixed threshold value is used for segmentation.
-- Pixels are classified as foreground or background.
-
-### Adaptive Thresholding
+### Erosion
 
 - Original image is displayed.
-- Adaptive Mean Thresholded image is displayed.
-- Adaptive Gaussian Thresholded image is displayed.
-- Threshold values vary across different regions of the image.
-- Suitable for images with uneven illumination.
+- Eroded image is displayed.
+- The thickness of the characters is reduced.
+- Object boundaries shrink inward.
 
-### Otsu's Thresholding
+### Dilation
 
 - Original image is displayed.
-- Otsu segmented image is displayed.
-- Optimal threshold value is calculated automatically.
-- Produces improved segmentation for bimodal histograms.
-
+- Dilated image is displayed.
+- The thickness of the characters increases.
+- Object boundaries expand outward.
 
 ## Result
 
-Thus, image segmentation is successfully performed using **Global Thresholding, Adaptive Thresholding, and Otsu's Thresholding** techniques in OpenCV. 
+Thus, the morphological operations **Erosion** and **Dilation** are successfully implemented using OpenCV.
